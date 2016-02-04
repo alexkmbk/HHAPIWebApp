@@ -1,0 +1,25 @@
+﻿@model HHAPIWebApp.Models.Vacancy
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Сведения о вакансии</title>
+</head>
+<body>
+    <div>
+        Тут должны быть сведения о вакансии 
+    </div>
+    <p>@Html.Label(Model.name)</p>
+    @Html.Label(Model.EmployerName)
+    @Html.Label(Model.AreaName)
+    <p>
+        <a href=@Model.url>@Model.url</a>
+    </p>
+    <p>
+        <input type="button" value="Назад" onclick="history.go(-1)" />    
+    </p>
+    
+ </body>
+</html>

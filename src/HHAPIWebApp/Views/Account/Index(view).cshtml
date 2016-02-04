@@ -1,0 +1,25 @@
+﻿@model HHAPIWebApp.Models.Register
+
+
+<form asp-controller="Account" asp-action="Index" method="post" role="form">
+
+    <h1>Изменение настроек пользователя @Model.Email</h1>
+    <p>
+        <div>email: @Model.Email</div>
+        token: @Html.TextBox("Token", Model.Token)
+        <input type="submit" value="Записать"/>
+
+        @if (ViewBag.ShowUpdateStatus)
+        {
+            if (ViewBag.Success)
+            {
+                <div>Изменения успешно записаны.</div>
+            }
+            else
+            {
+                <div>Ошибка записи: @ViewBag.Errors</div>
+            }
+        }
+    </p>
+
+</form>

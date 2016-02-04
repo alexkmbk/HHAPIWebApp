@@ -1,0 +1,15 @@
+﻿@model HHAPIWebApp.Models.Login
+
+<p>Html.AntiForgeryToken()</p>
+
+<form asp-controller="Account" asp-action="Login" method="post" class="form-horizontal" role="form">
+    
+    <p>
+        name: @Html.TextBox("Name")
+        password: @Html.TextBox("Password")
+        <input type="submit" value="Login" />
+        @Html.ActionLink("Регистрация", "Register", "Account")</td>
+    </p>
+
+</form>
+

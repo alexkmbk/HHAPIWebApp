@@ -1,0 +1,33 @@
+﻿@model IEnumerable<HHAPIWebApp.Models.Vacancy>
+
+@using (Html.BeginForm("Vacancies"))
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString")
+        <input type="submit" value="Search"/>
+        only open: @Html.CheckBox("openOnly",true, new { onclick = "this.form.submit();" })
+    </p>
+}
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Area name</th>
+            <th>Address</th>
+            <th>Employer</th>
+            <th>url</th>
+            <th>isopen</th>
+        </tr>
+        @foreach (var e in Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(@e.name,"Vacancy","Home", new {id = @e.id, name= @e.name, url = @e.url, raw_adress = @e.raw_adress, AreaName= @e.AreaName})</td>
+                <td>@e.AreaName</td>
+                <td>@e.raw_adress</td>
+                <td>@e.EmployerName</td>
+                <td>@e.url</td>
+                <td>@e.is_open</td>
+            </tr>
+
+        }
+    </table>

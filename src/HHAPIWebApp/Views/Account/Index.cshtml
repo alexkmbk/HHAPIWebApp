@@ -1,0 +1,36 @@
+﻿@model HHAPIWebApp.Models.Register
+
+
+<form method="POST" id="formSetToken" action="javascript:void(null);" onsubmit="call()">
+        <h1>Изменение настроек пользователя @Model.Email</h1>
+        <p>
+            <div>email: @Model.Email</div>
+            token: @Html.TextBox("Token", Model.Token)
+            User ID: @Html.TextBox("UserId", Model.UserId)
+            <input type="submit" value="Записать" />
+
+            <div id="formSetToken_divmsg"></div>
+        </p>
+    </form>
+
+
+    <script type="text/javascript" language="javascript">
+        function call() {
+            var msg = $('#formSetToken').serialize();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Index", "Account")',
+                data: msg,
+                success: function (data) {
+                    var myDiv = document.getElementById("formSetToken_divmsg");
+                    if (data["Success"]) myDiv.innerHTML = "Изменения успешно записаны.";
+                    else myDiv.innerHTML = "Ошибка записи: " + data["Errors"];
+                },
+                error: function (xhr, str) {
+                    var myDiv = document.getElementById("formSetToken_divmsg");
+                    myDiv.innerHTML = "Ошибка записи: " + xhr.responseCode;
+                }
+            });
+
+        }
+    </script>

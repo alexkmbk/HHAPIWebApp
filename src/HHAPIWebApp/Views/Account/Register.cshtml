@@ -1,0 +1,15 @@
+﻿@model HHAPIWebApp.Models.Register
+
+<p>Html.AntiForgeryToken()</p>
+
+<form asp-controller="Account" asp-action="Register" method="post" class="form-horizontal" role="form">
+
+    <p>
+        email: @Html.TextBox("Email")
+        password: @Html.TextBox("Password")
+        token: @Html.TextBox("Token")
+        <input type="submit" value="Register" />
+    </p>
+
+</form>
+

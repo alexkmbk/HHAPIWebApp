@@ -14,8 +14,7 @@ namespace HHAPIWebApp.Models
 
     public class AppRole : IdentityRole
     {
-        
-        
+             
     }
  
 }

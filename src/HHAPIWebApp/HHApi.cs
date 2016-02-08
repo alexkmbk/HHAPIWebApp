@@ -8,13 +8,14 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json.Linq;
 using HHAPIWebApp.Models;
+using Newtonsoft.Json;
 
 namespace HHAPIWebApp
 {
     static public class HHApi
     {
 
-        public static string GetUserInfo(string Token, string UserId)
+        public static Dictionary<String, object> GetUserInfo(string Token, string UserId)
         {
             HttpClient client = new HttpClient();
             if (string.IsNullOrEmpty(Token)) throw new System.ArgumentException("Не задан параметр Token", "Token");
@@ -27,16 +28,16 @@ namespace HHAPIWebApp
             HttpContent content = response.Content;
 
             // ... Read the string.
-            string result = content.ReadAsStringAsync().Result;
+            string strres = content.ReadAsStringAsync().Result;
 
-            // ... Display the result.
-            if (result != null &&
-            result.Length >= 50)
+             // ... Display the result.
+            if (strres != null && strres.Length >= 50)
             {
-                return result;
-            }
+                return JsonConvert.DeserializeObject<Dictionary<string, object>>(strres);
 
-            return "";
+            };
+
+            return null;
         }
 
         public static List<Vacancy> GetFavoriteVacancies(string Token, string UserId, string searchString, bool openOnly=true)
@@ -53,18 +54,9 @@ namespace HHAPIWebApp
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
             client.DefaultRequestHeaders.Add("User-Agent", UserId + " / 1.0 (alexkmbk@gmail.com)");
 
-            HttpResponseMessage response = client.GetAsync("https://api.hh.ru/me").Result;
-            HttpContent content = response.Content;
-
-            // ... Read the string.
-            string result = content.ReadAsStringAsync().Result;
-
-            // ... Display the result.
-            if (result != null &&
-            result.Length >= 50)
-            {
-                Console.WriteLine(result);
-            }
+            HttpResponseMessage response;
+            HttpContent content;
+            string result;
 
             //JArray items = new JArray();
             List<Vacancy> vacancies = new List<Vacancy>();

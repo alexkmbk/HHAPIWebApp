@@ -1,7 +1,41 @@
 ﻿<H>
     User info:
 </H>
+<style>
+    dt {
+        float: left;
+        clear: left;
+        width: 150px;
+        padding: 5px 0;
+        margin: 0;
+    }
+
+    dd {
+        float: left;
+        width: 200px;
+        padding: 5px 0;
+        margin: 0;
+        border-bottom: 1px dotted;
+    }
+
+    .cf:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+</style>
 
 <p>
-    @ViewData["UserInfo"];
+    <dl>
+
+        @foreach (var e in (Dictionary<String, object>)@ViewData["UserInfo"])
+        {
+            <dt>@e.Key</dt>
+            @if (@e.Value!=null)
+            {
+                <dd>@e.Value</dd>
+            }
+
+        };
+    </dl>
 </p>

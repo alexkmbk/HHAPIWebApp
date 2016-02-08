@@ -119,6 +119,7 @@ namespace HHAPIWebApp.Controllers
                 var user = _securityManager.FindByEmailAsync(User.Identity.Name).Result;
                 register.Email = user.Email;
                 register.Token = user.Token;
+                register.UserId = user.UserId;
 
                 ViewData["ShowUpdateStatus"] = false;
             

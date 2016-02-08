@@ -5,9 +5,13 @@
         <h1>Изменение настроек пользователя @Model.Email</h1>
         <p>
             <div>email: @Model.Email</div>
-            token: @Html.TextBox("Token", Model.Token)
-            User ID: @Html.TextBox("UserId", Model.UserId)
-            <input type="submit" value="Записать" />
+            <table>
+                <tr><th>token:</th></tr>
+                <tr><td>@Html.TextBox("Token", Model.Token, new { style = "width:1000px;" })</td></tr>
+                <tr><th>User ID:</th></tr>
+                <tr><td>@Html.TextBox("UserId", Model.UserId)</td></tr>
+            </table>
+            <p><input type="submit" value="Записать" /><p>
 
             <div id="formSetToken_divmsg"></div>
         </p>

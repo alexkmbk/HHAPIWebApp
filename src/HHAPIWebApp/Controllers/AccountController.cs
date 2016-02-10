@@ -27,8 +27,7 @@ namespace HHAPIWebApp.Controllers
             return View();
         }
 
-        //4
-
+        //Добавление нового пользователя
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]

@@ -1,15 +1,51 @@
 ﻿@model HHAPIWebApp.Models.Login
 
-<p>Html.AntiForgeryToken()</p>
+@*Html.AntiForgeryToken()*@
+
+<h1>Log in</h1>
 
 <form asp-controller="Account" asp-action="Login" method="post" class="form-horizontal" role="form">
-    
-    <p>
-        name: @Html.TextBox("Name")
-        password: @Html.TextBox("Password")
-        <input type="submit" value="Login" />
-        @Html.ActionLink("Регистрация", "Register", "Account")</td>
-    </p>
+    <style>
+        table {
+            border-spacing: 7px 11px;
+        }
 
+        td {
+            padding: 5px;
+        }
+    </style>
+    <p>
+        <table>
+            <tr>
+                <td>
+                    name\email:
+                </td>
+                <td>
+                    @Html.TextBox("Name",null,new { autofocus = "autofocus" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    password:
+                </td>
+                <td>
+                    <input name="Password" type="password"/>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td align="right">
+                    <input type="submit" value="Login" />
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td align="right">
+                    @Html.ActionLink("Регистрация", "Register", "Account")
+                </td>
+            </tr>
+        </table>
+    </p>
 </form>
 

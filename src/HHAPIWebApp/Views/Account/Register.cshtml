@@ -1,15 +1,100 @@
 ﻿@model HHAPIWebApp.Models.Register
 
-<p>Html.AntiForgeryToken()</p>
+@*Html.AntiForgeryToken()*@
 
-<form asp-controller="Account" asp-action="Register" method="post" class="form-horizontal" role="form">
+<h1>Регистрация</h1>
 
+<form method="POST" id="form_register" action="javascript:void(null);" onsubmit="Register()">
+
+    <style>
+        table {
+            border-spacing: 7px 11px;
+        }
+
+        td {
+            padding: 5px;
+        }
+    </style>
     <p>
-        email: @Html.TextBox("Email")
-        password: @Html.TextBox("Password")
-        token: @Html.TextBox("Token")
-        <input type="submit" value="Register" />
-    </p>
+        <table>
+            <tr>
+                <td>
+                    name\email:
+                </td>
+                <td>
+                    <input name="Email" autofocus required />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    password:
+                </td>
+                <td>
+                    <input name="Password" type="password" required />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Token:
+                </td>
+                <td>
+                    @Html.TextBox("Token")
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    User ID:
+                </td>
+                <td>
+                    @Html.TextBox("UserId")
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td align="right">
+                    <input type="submit" value="Register" onsubmit="Send()" />
+                </td>
+            </tr>
+
+
+        </table>
+
 
 </form>
 
+<div id="msg"></div>
+
+<script>
+    function Register() {
+
+        var msg = $('#form_register').serialize();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Register", "Account")',
+            data: msg,
+            success: function (data) {
+                @*Если запрос выполнен без ошибок*@
+                if (data["isOk"]) {
+                    var form = $("#form_register");
+                    form.attr("style", "color:green");
+                    form.html("Регистрация успешно выполнена!");
+                    $("#msg").html("");
+                }
+                else {
+                    @*Если запрос обработан, но произошла ошибка, то устанавливаем текст ошибки в элементе msg*@
+                    var msgDiv = $("#msg");
+                    msgDiv.attr("style", "color:red");
+                    msgDiv.html("Ошибка при регистрации: " + data["Errors"]);
+                }
+            },
+            // если запрос не удалось обработать
+            error: function (xhr, str) {
+                var msgDiv = $("#msg");
+                msgDiv.attr("style", "color:red");
+                msgDiv.html("Ошибка при регистрации: " + xhr.responseCode);
+            }
+        })
+    }
+</script>

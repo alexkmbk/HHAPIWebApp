@@ -59,7 +59,13 @@ namespace HHAPIWebApp.Controllers
                 }
             }
             // Получаем и передаем на страницу свойства пользователя
+            try { 
             ViewData["UserInfo"] = HHApi.GetUserInfo(token, UserId);
+            }
+            catch(System.ArgumentException e)
+            {
+                return RedirectToAction(nameof(AccountController.Index), "Account");
+            }
             // Получаем и передаем на страницу список вакансий
             ViewData["vacancies"] = HHApi.GetFavoriteVacancies(token, UserId, searchString, openOnly);
             return View();

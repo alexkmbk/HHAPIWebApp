@@ -30,7 +30,7 @@ namespace HHAPIWebApp.Controllers
         //Добавление нового пользователя
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(Register model)
         {
             if (ModelState.IsValid)
@@ -45,11 +45,17 @@ namespace HHAPIWebApp.Controllers
                 if (result.Succeeded)
                 {
                     await _loginManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
+                    return Json(new { isOk = true});
+                }
+                else
+                {
+                    string ErrorsStr = "";
+                    foreach (var e in result.Errors) ErrorsStr = ErrorsStr + e.Description; 
+                    return Json(new { isOk = false, Errors = ErrorsStr });
                 }
             }
 
-            return View(model);
+            return Json(new {isOk=false,Errors="undefined"});
         }
 
         //5

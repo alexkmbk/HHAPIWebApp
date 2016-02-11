@@ -25,11 +25,9 @@
             {
                 <tr>
                     <td>@e.name</td>
-                    @*<td>@Html.ActionLink(@e.name,"Vacancy","Home", new {id = @e.id, name= @e.name, url = @e.url, raw_adress = @e.raw_adress, AreaName= @e.AreaName})</td>*@
                     <td>@e.AreaName</td>
                     <td>@e.raw_adress</td>
                     <td>@e.EmployerName</td>
-                    @*<td>@e.url</td>*@
                     <td>@e.is_open</td>
                     <td style="display:none;">@e.id</td>
                 </tr>
@@ -50,6 +48,7 @@
         border: 5px solid #ffd800;
         border-radius: 7px;
     }
+    @*Для данной таблицы курсор выставим ладошкой, потому что строки кликабельны*@
     #vacancies {
         cursor: pointer
     }
@@ -57,12 +56,12 @@
 </style>
 
 <script>
-    // подсвечивание строки
+    // подсвечивание строки при наведении курсора
     $('#vacancies tbody > tr').on('mousemove', function () {
         $(this).addClass('highlight').siblings().removeClass('highlight');
      });
 
-    // двойной клик по ячейке таблицы, проиходсит вход в режим редактирования
+    // клик по строке таблицы, происходит переход на страницу свойств вакансии
     $('#vacancies > tbody > tr > td').on('click', function () {
         var VacancyId = $(this).parent().children("td:last-child").html();
         window.location = '/Home/Vacancy/?id=' + VacancyId;

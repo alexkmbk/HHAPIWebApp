@@ -1,6 +1,4 @@
-﻿@model HHAPIWebApp.Models.Vacancy
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 <head>
@@ -8,60 +6,39 @@
     <title>Сведения о вакансии</title>
 </head>
 <body>
-
-    @*
-    <div>
-        Тут должны быть сведения о вакансии
-    </div>
-    <p>@Html.Label(Model.name)</p>
-    @Html.Label(Model.EmployerName)
-    @Html.Label(Model.AreaName)
-    <p>
-        <a href=@Model.url>@Model.url</a>
-    </p>
-    <p>
-        <input type="button" value="Назад" onclick="history.go(-1)" />
-    </p>
-    *@
-
-
-    <p>
-        <dl>
-
+        <div style="border-radius: 5px; background: #42bd7e; padding: 5px; color: #fff; text-align: center;">
+            <h1>
+                Сведения о вакансии
+            </h1>
+        </div>
+    <table class="table table-striped table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Свойство</th>
+                <th>Значение</th>
+            </tr>
+        </thead>
+        <tbody>
             @foreach (var e in (Dictionary<String, object>)@ViewData["VacancyInfo"])
             {
-                <dt>@e.Key</dt>
-                @if (@e.Value != null)
-                {
-                    <dd>@e.Value</dd>
-                }
-
-            };
-        </dl>
+                <tr>
+                    <td><span style="font-weight: bold">@e.Key</span></td>
+                    @*Если ссылка то добавим гиперссылку*@
+                    @if (@e.Key.Contains("url"))
+                    {
+                        <td><a href="@e.Value">@e.Value</a></td>
+                    }
+                    else
+                    {
+                        <td>@e.Value</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+    <p>
+        <input type="button" value="Назад" onclick="history.back(-1)" />
     </p>
-
-    <style>
-        dt {
-            float: left;
-            clear: left;
-            width: 150px;
-            padding: 5px 0;
-            margin: 0;
-        }
-
-        dd {
-            float: left;
-            width: 200px;
-            padding: 5px 0;
-            margin: 0;
-            border-bottom: 1px dotted;
-        }
-
-        .cf:after {
-            content: '';
-            display: table;
-            clear: both;
-        }
-    </style>
  </body>
+
 </html>

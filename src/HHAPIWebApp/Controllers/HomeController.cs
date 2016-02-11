@@ -65,18 +65,6 @@ namespace HHAPIWebApp.Controllers
             return View();
         }
 
-        // Возвращает HTML страницу с выводом свойств одной вакансии
-        public IActionResult Vacancy(string id, string name, string url, string raw_adress, string AreaName)
-        {
-            Vacancy vacancy = new Vacancy();
-            vacancy.id = id;
-            vacancy.name = name;
-            vacancy.url = url;
-            vacancy.raw_adress = raw_adress;
-            vacancy.AreaName = AreaName;
-            return View(vacancy);
-        }
-
         // Возвращает HTML страницу с выводом свойств одной вакансии, перед этим запросив их на сервере HH.ru
         [HttpGet]
         public IActionResult Vacancy(string id)

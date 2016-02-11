@@ -15,7 +15,10 @@ namespace HHAPIWebApp
     // Класс, предназначенный для работы с API сайта HH.ru
     static public class HHApi
     {
-        // Возвращает свойства текущего пользователя HH.ru
+        // Возвращает свойства текущего пользователя HH.ru в виде словаря свойств
+        // Параметры:
+        //      Token - текстовый token, можно получить на сайте hh.ru при подлючении приложения в профиле
+        //      UserId - текстовый идентификатор пользователя, можно получить на сайте hh.ru при подлючении приложения в профиле
         public static Dictionary<String, object> GetUserInfo(string Token, string UserId)
         {
             HttpClient client = new HttpClient();
@@ -35,13 +38,19 @@ namespace HHAPIWebApp
             if (strres != null && strres.Length >= 50)
             {
                 return JsonConvert.DeserializeObject<Dictionary<string, object>>(strres);
-
             };
 
             return null;
         }
 
-        // Получение списка вакансий с сервера HH.ru
+        // Возвращает список отобранных вакансий с сервера HH.ru
+        // Параметры:
+        //      Token - текстовый token, можно получить на сайте hh.ru при подлючении приложения в профиле
+        //      UserId - текстовый идентификатор пользователя, можно получить на сайте hh.ru при подлючении приложения в профиле
+        //      searchString - строка отбора, если задана, то функция возвращает только те вакансии, в свойствах которых присутствует
+        //                      указанный текст отбора
+        //      openOnly - если задано в значение true, то функция вернет только открытые вакансии
+        //
         public static List<Vacancy> GetFavoriteVacancies(string Token, string UserId, string searchString, bool openOnly=true)
         {
             // если  задана строка отбора, то приводим её к нижему регистру
@@ -59,7 +68,6 @@ namespace HHAPIWebApp
             HttpContent content;
             string result;
 
-            //JArray items = new JArray();
             List<Vacancy> vacancies = new List<Vacancy>();
 
             int pageNum = 0;
@@ -77,28 +85,21 @@ namespace HHAPIWebApp
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    // problems handling here
-                    Console.WriteLine(
-                        "Error occurred, the status code is: {0}",
-                        response.StatusCode
-                    );
                     break;
                 }
                 content = response.Content;
 
-                // ... Read the string.
                 result = content.ReadAsStringAsync().Result;
-
-                // ... Display the result.
                 if (result == null)
                 {
-                    Console.WriteLine("Ошибка при получении списка отобранных вакансий в текстовом виде.");
-                    return null;
+                    throw new System.Exception("Ошибка при получении списка отобранных вакансий в текстовом виде.");
                 }
                 else
                 {
                     JObject json = JObject.Parse(result);
                     JArray a = (JArray)json["items"];
+                    // Если количество полученных вакансий равно нулю, значит дошли до предела списка
+                    // и поэтому выходим из списка
                     if (a.Count == 0)
                     {
                         break;

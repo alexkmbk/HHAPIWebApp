@@ -77,5 +77,25 @@ namespace HHAPIWebApp.Controllers
             return View(vacancy);
         }
 
+        // Возвращает HTML страницу с выводом свойств одной вакансии, перед этим запросив их на сервере HH.ru
+        [HttpGet]
+        public IActionResult Vacancy(string id)
+        {
+            string token = null;
+            string UserId = null;
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = _securityManager.FindByEmailAsync(User.Identity.Name).Result;
+                if (user != null && !string.IsNullOrEmpty(user.Token))
+                {
+                    token = user.Token;
+                    UserId = user.UserId;
+                }
+            }
+            ViewData["VacancyInfo"] = HHApi.GetVacancyInfo(token, UserId, id);
+            
+             return View();
+        }
+
     }
 }

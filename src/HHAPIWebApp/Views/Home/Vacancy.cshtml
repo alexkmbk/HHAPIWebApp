@@ -8,8 +8,10 @@
     <title>Сведения о вакансии</title>
 </head>
 <body>
+
+    @*
     <div>
-        Тут должны быть сведения о вакансии 
+        Тут должны быть сведения о вакансии
     </div>
     <p>@Html.Label(Model.name)</p>
     @Html.Label(Model.EmployerName)
@@ -18,8 +20,48 @@
         <a href=@Model.url>@Model.url</a>
     </p>
     <p>
-        <input type="button" value="Назад" onclick="history.go(-1)" />    
+        <input type="button" value="Назад" onclick="history.go(-1)" />
     </p>
-    
+    *@
+
+
+    <p>
+        <dl>
+
+            @foreach (var e in (Dictionary<String, object>)@ViewData["VacancyInfo"])
+            {
+                <dt>@e.Key</dt>
+                @if (@e.Value != null)
+                {
+                    <dd>@e.Value</dd>
+                }
+
+            };
+        </dl>
+    </p>
+
+    <style>
+        dt {
+            float: left;
+            clear: left;
+            width: 150px;
+            padding: 5px 0;
+            margin: 0;
+        }
+
+        dd {
+            float: left;
+            width: 200px;
+            padding: 5px 0;
+            margin: 0;
+            border-bottom: 1px dotted;
+        }
+
+        .cf:after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+    </style>
  </body>
 </html>

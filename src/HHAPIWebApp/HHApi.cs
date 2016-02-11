@@ -43,6 +43,36 @@ namespace HHAPIWebApp
             return null;
         }
 
+        // Возвращает свойства вакансии в виде словаря свойств
+        // Параметры:
+        //      Token - текстовый token, можно получить на сайте hh.ru при подлючении приложения в профиле
+        //      UserId - текстовый идентификатор пользователя, можно получить на сайте hh.ru при подлючении приложения в профиле
+        //      VacancyId - текстовый идентификатор вакансии
+        public static Dictionary<String, object> GetVacancyInfo(string Token, string UserId, string VacancyId)
+        {
+            HttpClient client = new HttpClient();
+            if (string.IsNullOrEmpty(Token)) throw new System.ArgumentException("Не задан параметр Token", "Token");
+            if (string.IsNullOrEmpty(UserId)) throw new System.ArgumentException("Не задан параметр UserId", "UserId");
+            if (string.IsNullOrEmpty(VacancyId)) throw new System.ArgumentException("Не задан параметр VacancyId", "VacancyId");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+            client.DefaultRequestHeaders.Add("User-Agent", UserId + " / 1.0 (alexkmbk@gmail.com)");
+
+            HttpResponseMessage response = client.GetAsync($"https://api.hh.ru//vacancies/{VacancyId}").Result;
+            HttpContent content = response.Content;
+
+            // ... Read the string.
+            string strres = content.ReadAsStringAsync().Result;
+
+            // ... Display the result.
+            if (strres != null && strres.Length >= 50)
+            {
+                return JsonConvert.DeserializeObject<Dictionary<string, object>>(strres);
+            };
+
+            return null;
+        }
+
         // Возвращает список отобранных вакансий с сервера HH.ru
         // Параметры:
         //      Token - текстовый token, можно получить на сайте hh.ru при подлючении приложения в профиле

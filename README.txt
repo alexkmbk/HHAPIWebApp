@@ -1,5 +1,5 @@
 # HHAPIWebApp
-Учебный проект на платформе ASP .NET MVC 6 
+Учебный проект на платформе ASP .NET MVC 6
 База данных: PostgreeSQL
 ORM: EF7
 frontend: jquery,bootstrap

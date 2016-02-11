@@ -2,7 +2,7 @@
 Учебный проект на платформе ASP .NET MVC 6 
 База данных: PostgreeSQL
 ORM: EF7
-frontend: jquery
+frontend: jquery,bootstrap
 
 Функционал
 Отображение списка отобранных вакансий на сайте hh.ru с помощью API -https://github.com/hhru/api/blob/master/docs/general.md

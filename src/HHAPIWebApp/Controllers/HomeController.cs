@@ -19,8 +19,6 @@ namespace HHAPIWebApp.Controllers
             _securityManager = securityManager;
         }
 
-        private List<Vacancy> _vacancies;
-
         public IActionResult Index()
         {
             return View();
@@ -45,6 +43,7 @@ namespace HHAPIWebApp.Controllers
             return View();
         }
 
+        // Возвращает HTML страницу со списком вакансий
         [Authorize]
         public IActionResult Vacancies(string searchString, bool openOnly=true)
         {
@@ -59,16 +58,16 @@ namespace HHAPIWebApp.Controllers
                     UserId = user.UserId;
                 }
             }
+            // Получаем и передаем на страницу свойства пользователя
             ViewData["UserInfo"] = HHApi.GetUserInfo(token, UserId);
-
-            _vacancies = HHApi.GetFavoriteVacancies(token, UserId, searchString, openOnly);
-            ViewData["vacancies"] = _vacancies;
+            // Получаем и передаем на страницу список вакансий
+            ViewData["vacancies"] = HHApi.GetFavoriteVacancies(token, UserId, searchString, openOnly);
             return View();
         }
 
+        // Возвращает HTML страницу с выводом свойств одной вакансии
         public IActionResult Vacancy(string id, string name, string url, string raw_adress, string AreaName)
         {
-            //var vacancy = _vacancies.Find(x => x.id == id);
             Vacancy vacancy = new Vacancy();
             vacancy.id = id;
             vacancy.name = name;

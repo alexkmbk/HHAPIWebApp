@@ -33,6 +33,8 @@ namespace HHAPIWebApp.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(Register model)
         {
+            string ErrorsStr = "";
+            // Проверка на валидацию модели
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
@@ -49,13 +51,18 @@ namespace HHAPIWebApp.Controllers
                 }
                 else
                 {
-                    string ErrorsStr = "";
-                    foreach (var e in result.Errors) ErrorsStr = ErrorsStr + e.Description; 
+                    foreach (var e in result.Errors) ErrorsStr = ErrorsStr + e.Description + ";"; 
                     return Json(new { isOk = false, Errors = ErrorsStr });
                 }
             }
-
-            return Json(new {isOk=false,Errors="undefined"});
+            foreach (var modelState in ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    ErrorsStr = ErrorsStr + error.ErrorMessage + ";";
+                }
+            }
+            return Json(new {isOk=false,Errors=ErrorsStr});
         }
 
         //5

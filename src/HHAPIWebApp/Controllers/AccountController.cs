@@ -55,6 +55,7 @@ namespace HHAPIWebApp.Controllers
                     return Json(new { isOk = false, Errors = ErrorsStr });
                 }
             }
+            // Получаем текстовое представление списка ошибок валидации, чтобы отправить на клиент
             foreach (var modelState in ModelState.Values)
             {
                 foreach (var error in modelState.Errors)
@@ -140,6 +141,12 @@ namespace HHAPIWebApp.Controllers
             return View(register);
         }
 
+        /// <summary>
+        /// Обновление данных о пользователи в БД
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Index(string Token, string UserId)

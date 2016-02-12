@@ -62,10 +62,13 @@ namespace HHAPIWebApp.Controllers
             try { 
             ViewData["UserInfo"] = HHApi.GetUserInfo(token, UserId);
             }
+            // Если произошло исключение связанное с параметрами, отправляем юзера на страницу 
+            // заполнения Token и UserId
             catch(System.ArgumentException e)
             {
                 return RedirectToAction(nameof(AccountController.Index), "Account");
             }
+
             // Получаем и передаем на страницу список вакансий
             ViewData["vacancies"] = HHApi.GetFavoriteVacancies(token, UserId, searchString, openOnly);
             return View();

@@ -71,6 +71,8 @@ namespace HHAPIWebApp.Controllers
 
             // Получаем и передаем на страницу список вакансий
             ViewData["vacancies"] = HHApi.GetFavoriteVacancies(token, UserId, searchString, openOnly);
+            ViewData["token"] = token;
+            ViewData["UserId"] = UserId;
             return View();
         }
 

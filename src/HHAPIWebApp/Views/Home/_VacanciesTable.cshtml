@@ -60,6 +60,9 @@
 </style>
 
 <script>
+    var token = "@ViewData["token"]";
+    var UserId = "@ViewData["UserId"]";
+    
     // подсвечивание строки при наведении курсора
     $('#vacancies tbody > tr').on('mousemove', function () {
         $(this).addClass('highlight').siblings().removeClass('highlight');
@@ -69,5 +72,28 @@
     $('#vacancies > tbody > tr > td').on('click', function () {
         var VacancyId = $(this).parent().children("td:last-child").html();
         window.location = '/Home/Vacancy/?id=' + VacancyId;
-      });
+    });
+
+    $("input[name='SearchString']").autocomplete({
+        minLength: 2,
+        source: function (request, response) {
+            $.ajax({
+                url: "https://api.hh.ru/suggests/areas?text=" + request.term,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Bearer : " + token);
+                    //xhr.setRequestHeader("User-Agent", UserId + " / 1.0 (alexkmbk@gmail.com)");
+                },
+                success: function (data) {
+                    var items = data["items"];
+                    var resItems= new Array;
+                    var len = items.length;
+                    for (var i = 0; i < len; i++) {
+                        var text = items[i]["text"];
+                        resItems[i] = { value: text, label: text};
+                    }
+                    response(resItems);
+                }
+            });
+        }
+    });
 </script>

@@ -17,18 +17,22 @@
                 <th>Address</th>
                 <th>Employer</th>
                 @*<th>url</th>*@
-                <th>isopen</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var e in Model)
             {
                 <tr>
-                    <td>@e.name</td>
+                    @if (e.is_open)
+                    {
+                        <td>@e.name</td>
+                    }
+                    else {
+                    <td>@e.name <span style="color:red; font-size: smaller"> (в архиве)</span></td>
+                    }
                     <td>@e.AreaName</td>
                     <td>@e.raw_adress</td>
                     <td>@e.EmployerName</td>
-                    <td>@e.is_open</td>
                     <td style="display:none;">@e.id</td>
                 </tr>
 

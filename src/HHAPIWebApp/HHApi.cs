@@ -169,8 +169,7 @@ namespace HHAPIWebApp
                         }
                         try
                         {
-                            JObject type = (JObject)item["type"];
-                            vacancy.is_open = (type["id"].ToString() == "open") ? true : false;
+                            vacancy.is_open = (item["archived"].ToString() != "True");
                         }
                         catch
                         {
@@ -192,11 +191,12 @@ namespace HHAPIWebApp
                         {
                             skip = true;
                         }
+                        
+                        vacancy.id = item["id"].ToString();
 
                         // если вакансия не попала в список отфильтрованных - добавляем в коллекцию
                         if (!skip) vacancies.Add(vacancy);
-                        
-                        vacancy.id = item["id"].ToString();
+
 
                     }
                 }

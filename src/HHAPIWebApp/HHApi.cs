@@ -18,13 +18,24 @@ namespace HHAPIWebApp
     // Класс, предназначенный для работы с API сайта HH.ru
     public class HHApi
     {
+        HttpClient client;
+
+        public HHApi()
+        {
+            client = new HttpClient();
+        }
+
+        public HHApi(HttpClient _client)
+        {
+            client = _client;
+        }
+
         // Возвращает свойства текущего пользователя HH.ru в виде словаря свойств
         // Параметры:
         //      Token - текстовый token, можно получить на сайте hh.ru при подлючении приложения в профиле
         //      UserId - текстовый идентификатор пользователя, можно получить на сайте hh.ru при подлючении приложения в профиле
         public Dictionary<String, object> GetUserInfo(string Token, string UserId)
         {
-            HttpClient client = new HttpClient();
             if (string.IsNullOrEmpty(Token)) throw new System.ArgumentException("Не задан параметр Token", "Token");
             if (string.IsNullOrEmpty(UserId)) throw new System.ArgumentException("Не задан параметр UserId", "UserId");
 
@@ -63,7 +74,6 @@ namespace HHAPIWebApp
         //      VacancyId - текстовый идентификатор вакансии
         public  Dictionary<String, object> GetVacancyInfo(string Token, string UserId, string VacancyId)
         {
-            HttpClient client = new HttpClient();
             if (string.IsNullOrEmpty(Token)) throw new System.ArgumentException("Не задан параметр Token", "Token");
             if (string.IsNullOrEmpty(UserId)) throw new System.ArgumentException("Не задан параметр UserId", "UserId");
             if (string.IsNullOrEmpty(VacancyId)) throw new System.ArgumentException("Не задан параметр VacancyId", "VacancyId");
@@ -72,6 +82,16 @@ namespace HHAPIWebApp
             client.DefaultRequestHeaders.Add("User-Agent", UserId + " / 1.0 (alexkmbk@gmail.com)");
 
             HttpResponseMessage response = client.GetAsync($"https://api.hh.ru//vacancies/{VacancyId}").Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    throw new AuthException();
+                }
+                throw new Exception();
+            }
+
             HttpContent content = response.Content;
 
             // ... Read the string.
@@ -100,7 +120,6 @@ namespace HHAPIWebApp
             string searchStringLow = (searchString==null) ? null : searchString.ToLower();
   
             // ... Use HttpClient.
-            HttpClient client = new HttpClient();
             if (string.IsNullOrEmpty(Token)) throw new System.ArgumentException("Не задан параметр Token", "Token");
             if (string.IsNullOrEmpty(UserId)) throw new System.ArgumentException("Не задан параметр UserId", "UserId");
 

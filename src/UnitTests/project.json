@@ -15,7 +15,7 @@
   },
 
   "commands": {
-    "IntegrationTests": "IntegrationTests"
+    "UnitTests": "UnitTests"
   },
 
   "frameworks": {

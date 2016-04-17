@@ -26,10 +26,12 @@ namespace IntegrationTests
     {
         [Test]
         // проверка на то, что будет вызвано исключение если передать не правильные параметры аутентификации
-        public void GetUserInfo_EmptyParams_ThrowsException()
+        public void EmptyParams_ThrowsException()
         {
             HHApi hhapi = new HHApi();
+            Assert.Catch<AuthException>(() => hhapi.GetVacancyInfo("12313", "13131", "32143241"));
             Assert.Catch<AuthException>(() => hhapi.GetFavoriteVacancies("12313", "13131", "12131616"));
+            Assert.Catch<AuthException>(() => hhapi.GetUserInfo("12313", "13131"));
         }
     }
 

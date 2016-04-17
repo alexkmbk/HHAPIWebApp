@@ -1,0 +1,47 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "IntegrationTests Console Application",
+  "authors": [ "Alexey" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "compilationOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "HHAPIWebApp": "1.0.0-*"
+  },
+
+  "commands": {
+    "test": "IntegrationTests"
+  },
+
+  "frameworks": {
+    "dnx451": {
+      "dependencies": {
+        "FluentAssertions": "4.0.1",
+        "Microsoft.CSharp": "4.0.1-beta-23516",
+        "NUnit": "3.2.0",
+        "NUnitLite": "3.0.0",
+        "System.Collections": "4.0.11-beta-23516",
+        "System.Console": "4.0.0-beta-23516",
+        "System.Linq": "4.0.1-beta-23516",
+        "System.Threading": "4.0.11-beta-23516"
+      }
+    },
+    "dnxcore50": {
+      "dependencies": {
+        "FluentAssertions": "4.0.1",
+        "Microsoft.CSharp": "4.0.1-beta-23516",
+        "NUnit": "3.2.0",
+        "NUnitLite": "3.0.0",
+        "System.Collections": "4.0.11-beta-23516",
+        "System.Console": "4.0.0-beta-23516",
+        "System.Linq": "4.0.1-beta-23516",
+        "System.Threading": "4.0.11-beta-23516"
+      }
+    }
+  }
+}

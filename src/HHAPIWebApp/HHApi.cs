@@ -12,14 +12,17 @@ using Newtonsoft.Json;
 
 namespace HHAPIWebApp
 {
+
+    public class AuthException : Exception{};
+
     // Класс, предназначенный для работы с API сайта HH.ru
-    static public class HHApi
+    public class HHApi
     {
         // Возвращает свойства текущего пользователя HH.ru в виде словаря свойств
         // Параметры:
         //      Token - текстовый token, можно получить на сайте hh.ru при подлючении приложения в профиле
         //      UserId - текстовый идентификатор пользователя, можно получить на сайте hh.ru при подлючении приложения в профиле
-        public static Dictionary<String, object> GetUserInfo(string Token, string UserId)
+        public Dictionary<String, object> GetUserInfo(string Token, string UserId)
         {
             HttpClient client = new HttpClient();
             if (string.IsNullOrEmpty(Token)) throw new System.ArgumentException("Не задан параметр Token", "Token");
@@ -29,6 +32,16 @@ namespace HHAPIWebApp
             client.DefaultRequestHeaders.Add("User-Agent", UserId + " / 1.0 (alexkmbk@gmail.com)");
 
             HttpResponseMessage response = client.GetAsync("https://api.hh.ru/me").Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    throw new AuthException();
+                }
+                throw new Exception();
+            }
+
             HttpContent content = response.Content;
 
             // ... Read the string.
@@ -48,7 +61,7 @@ namespace HHAPIWebApp
         //      Token - текстовый token, можно получить на сайте hh.ru при подлючении приложения в профиле
         //      UserId - текстовый идентификатор пользователя, можно получить на сайте hh.ru при подлючении приложения в профиле
         //      VacancyId - текстовый идентификатор вакансии
-        public static Dictionary<String, object> GetVacancyInfo(string Token, string UserId, string VacancyId)
+        public  Dictionary<String, object> GetVacancyInfo(string Token, string UserId, string VacancyId)
         {
             HttpClient client = new HttpClient();
             if (string.IsNullOrEmpty(Token)) throw new System.ArgumentException("Не задан параметр Token", "Token");
@@ -81,7 +94,7 @@ namespace HHAPIWebApp
         //                      указанный текст отбора
         //      openOnly - если задано в значение true, то функция вернет только открытые вакансии
         //
-        public static List<Vacancy> GetFavoriteVacancies(string Token, string UserId, string searchString, bool openOnly=true)
+        public List<Vacancy> GetFavoriteVacancies(string Token, string UserId, string searchString, bool openOnly=true)
         {
             // если  задана строка отбора, то приводим её к нижему регистру
             string searchStringLow = (searchString==null) ? null : searchString.ToLower();
@@ -103,18 +116,14 @@ namespace HHAPIWebApp
             int pageNum = 0;
             while (true)
             {
-                try
-                {
-                    response = client.GetAsync($"https://api.hh.ru/vacancies/favorited?per_page=100&page={pageNum}").Result;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Exception while execute Get https://api.hh.ru/vacancies/favorited: " + e.Message);
-                    return null;
-                }
+                response = client.GetAsync($"https://api.hh.ru/vacancies/favorited?per_page=100&page={pageNum}").Result;
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                    {
+                        throw new AuthException();
+                    }
                     break;
                 }
                 content = response.Content;

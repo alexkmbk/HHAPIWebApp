@@ -47,6 +47,8 @@ namespace HHAPIWebApp.Controllers
         [Authorize]
         public IActionResult Vacancies(string searchString, bool openOnly=true)
         {
+            HHApi hhapi = new HHApi();
+
             string token = null;
             string UserId = null;
             if (User.Identity.IsAuthenticated)
@@ -60,17 +62,16 @@ namespace HHAPIWebApp.Controllers
             }
             // Получаем и передаем на страницу свойства пользователя
             try { 
-            ViewData["UserInfo"] = HHApi.GetUserInfo(token, UserId);
+            ViewData["UserInfo"] = hhapi.GetUserInfo(token, UserId);
             }
             // Если произошло исключение связанное с параметрами, отправляем юзера на страницу 
             // заполнения Token и UserId
-            catch(System.ArgumentException e)
+            catch(Exception e) when (e is System.ArgumentException || e is AuthException)
             {
                 return RedirectToAction(nameof(AccountController.Index), "Account");
             }
-
             // Получаем и передаем на страницу список вакансий
-            ViewData["vacancies"] = HHApi.GetFavoriteVacancies(token, UserId, searchString, openOnly);
+            ViewData["vacancies"] = hhapi.GetFavoriteVacancies(token, UserId, searchString, openOnly);
             ViewData["token"] = token;
             ViewData["UserId"] = UserId;
             return View();
@@ -80,6 +81,7 @@ namespace HHAPIWebApp.Controllers
         [HttpGet]
         public IActionResult Vacancy(string id)
         {
+            HHApi hhapi = new HHApi();
             string token = null;
             string UserId = null;
             if (User.Identity.IsAuthenticated)
@@ -91,7 +93,7 @@ namespace HHAPIWebApp.Controllers
                     UserId = user.UserId;
                 }
             }
-            ViewData["VacancyInfo"] = HHApi.GetVacancyInfo(token, UserId, id);
+            ViewData["VacancyInfo"] = hhapi.GetVacancyInfo(token, UserId, id);
             
              return View();
         }
